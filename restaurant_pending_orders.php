@@ -20,7 +20,13 @@ $query = "SELECT o.order_id, o.customer_id, o.restaurant_id, o.total_price, o.pa
 if (isset($_SESSION['restaurant_id'])) {
     $restaurant_id = $_SESSION['restaurant_id'];
     $query .= "AND r.restaurant_id = $restaurant_id";
+    $name_query = "SELECT restaurant_name FROM restaurants WHERE restaurant_id = $restaurant_id";
+    $stmt = $conn->prepare($name_query);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $restaurant_name = $result->fetch_assoc()["restaurant_name"];
 }
+
 
 $stmt = $conn->prepare($query);
 
@@ -47,13 +53,13 @@ $result = $stmt->get_result();
 <body>
     <?php include("header.php") ?>
     <div class="container mt-5">
-        <h2>Pending Orders Across All Restaurants</h2>
+        <h2>Pending Orders <?php echo isset($restaurant_name) ? "For $restaurant_name" : "Across All Restaurants" ?></h2>
         <table class="table">
             <thead>
                 <tr>
                     <th>Order ID</th>
                     <th>Customer ID</th>
-                    <th>Restaurant</th>
+                    <?php if (!isset($restaurant_name)) echo '<th>Restaurant</th>' ?>
                     <th>Total Price</th>
                     <th>Payment Method</th>
                     <th>Delivery Type</th>
@@ -71,7 +77,7 @@ $result = $stmt->get_result();
                         echo '<tr>';
                         echo '<td>' . $order['order_id'] . '</td>';
                         echo '<td>' . $order['customer_id'] . '</td>';
-                        echo '<td>' . htmlspecialchars($order['restaurant_name']) . '</td>';
+                        if (!isset($restaurant_name)) echo '<td>' . htmlspecialchars($order['restaurant_name']) . '</td>';
                         echo '<td>$' . number_format($order['total_price'], 2) . '</td>';
                         echo '<td>' . htmlspecialchars($order['payment_method']) . '</td>';
                         echo '<td>' . htmlspecialchars($order['delivery_type']) . '</td>';

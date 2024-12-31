@@ -9,12 +9,14 @@ $result = $conn->query($query);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marketplaces</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <?php include("header.php") ?>
 
@@ -25,7 +27,7 @@ $result = $conn->query($query);
                 <?php while ($restaurant = $result->fetch_assoc()): ?>
                     <div class="col-md-4">
                         <div class="card mb-4 shadow-sm">
-                            <img src="path/to/restaurant_image.jpg" class="card-img-top" alt="<?php echo htmlspecialchars($restaurant['restaurant_name']); ?>">
+                            <img src="<?php echo file_exists("images/" . $restaurant['restaurant_name'] . '.jpeg') ? "images/" . $restaurant['restaurant_name'] . ".jpeg" : 'images/MIU_Bites.png' ?>" class="card-img-top" height="300" alt="<?php echo htmlspecialchars($restaurant['restaurant_name']); ?>">
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo htmlspecialchars($restaurant['restaurant_name']); ?></h5>
                                 <p class="card-text"><?php echo htmlspecialchars($restaurant['description']); ?></p>
@@ -46,4 +48,5 @@ $result = $conn->query($query);
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

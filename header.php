@@ -2,11 +2,11 @@
 $isLoggedIn = isset($_SESSION['user_id']);
 $userRole = $_SESSION['role']; 
 ?>
-<nav class="navbar navbar-expand-lg bg-white sticky-top border">
+<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top border">
     <div class="container">
         <a class="navbar-brand" href="#">
-            <div style="position: relative; height: 50px; width: 200px;">
-                <img src="images/MIU_bites.png" alt="Centered Image" height="250" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <div style="position: relative; height: 50px; width: 200px; overflow: hidden">
+                <img src="images/MIU_bites.png" alt="Centered Image" height="250" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);z-index:-999;">
             </div>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

@@ -135,7 +135,8 @@ CREATE TABLE `orders` (
 
 INSERT INTO `orders` (`order_id`, `customer_id`, `restaurant_id`, `status`, `total_price`, `payment_method`, `delivery_type`, `order_notes`, `created_at`) VALUES
 (18, 9, 5, 'processing', 2.99, 'cash', '', NULL, '2024-12-27 17:18:03'),
-(19, 9, 6, 'processing', 3.99, 'cash', '', NULL, '2024-12-27 17:18:03');
+(19, 9, 6, 'processing', 3.99, 'cash', '', NULL, '2024-12-27 17:18:03'),
+(20, 9, 3, 'processing', 4.99, 'cash', 'pickup', NULL, '2024-12-27 18:15:50');
 
 -- --------------------------------------------------------
 
@@ -206,9 +207,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `name`, `email`, `password_hash`, `phone_number`, `address`, `role`, `restaurant_id`, `registration_date`) VALUES
-(8, 'Cinnabon', 'cinnabon@mail.com', '$2y$10$90IR3FBcJN9lQKv3SQiHLueF/ZTj3/sltBRChfJYZMVJanCPEcG.S', '19191919119', 'Cinnabon shobra', 'restaurant', 6, '2024-12-27 17:35:25'),
+(8, 'Cinnabon', 'cinnabon@mail.com', '$2y$10$90IR3FBcJN9lQKv3SQiHLueF/ZTj3/sltBRChfJYZMVJanCPEcG.S', '19191919119', 'Cinnabon MIU', 'restaurant', 6, '2024-12-27 17:35:25'),
 (9, 'Shadow', 'mail@mail.com', '$2y$10$aCcjH/QyZi0obzTB1s2BH.gYYuRh7h.6wYrwOsTnxmszWuF2GcUle', '129301238201938', 'The white hosue', 'customer', NULL, '2024-12-27 17:37:07'),
-(10, 'Zalabia', 'zalabia@mail.com', '$2y$10$90IR3FBcJN9lQKv3SQiHLueF/ZTj3/sltBRChfJYZMVJanCPEcG.S', '19191919119', 'Cinnabon shobra', 'restaurant', 5, '2024-12-27 17:35:25');
+(10, 'Zalabia', 'zalabia@mail.com', '$2y$10$90IR3FBcJN9lQKv3SQiHLueF/ZTj3/sltBRChfJYZMVJanCPEcG.S', '19191919119', 'Zalabia MIU', 'restaurant', 5, '2024-12-27 17:35:25'),
+(11, 'Admin', 'admin@mail.com', '$2y$10$90IR3FBcJN9lQKv3SQiHLueF/ZTj3/sltBRChfJYZMVJanCPEcG.S', '19191919119', '', 'restaurant', NULL, '2024-12-27 17:35:25');
 
 --
 -- Indexes for dumped tables
@@ -289,7 +291,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `contracts`
@@ -319,7 +321,7 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `order_items`
@@ -337,7 +339,7 @@ ALTER TABLE `restaurants`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
