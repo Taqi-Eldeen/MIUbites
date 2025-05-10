@@ -120,72 +120,131 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout</title>
+    <title>Checkout - MIU Fashion</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
 </head>
 <body>
     <?php include("header.php") ?>
 
     <div class="container mt-5">
         <div class="mb-4">
-            <a href="javascript:history.back()" class="btn btn-secondary">Back</a>
+            <a href="javascript:history.back()" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Back
+            </a>
         </div>
-        <h2 class="mb-4">Checkout</h2>
-        <div id="cart-summary" class="mb-4">
-            <h5>Order Summary</h5>
-            <p>Total: $<?php echo number_format($total, 2); ?></p>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <?php if (count($order_items) > 0) : ?>
+                <form id="payment-form" method="POST" class="needs-validation" novalidate>
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">Payment Information</h4>
+                            <div class="mb-4">
+                                <label for="payment-method" class="form-label required">Payment Method</label>
+                                <select class="form-select" id="payment-method" name="payment_method" required>
+                                    <option value="">Select payment method</option>
+                                    <option value="cash">Cash</option>    
+                                    <option value="credit_card">Credit Card</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a payment method
+                                </div>
+                            </div>
+                            <div id="card-fields" style="display: none;">
+                                <div class="mb-4">
+                                    <label for="card-name" class="form-label required">Cardholder Name</label>
+                                    <input type="text" class="form-control" id="card-name" name="card_name" disabled required>
+                                    <div class="invalid-feedback">
+                                        Please enter the cardholder name
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="card-number" class="form-label required">Card Number</label>
+                                    <input type="text" class="form-control" id="card-number" name="card_number" disabled required pattern="[0-9]{16}">
+                                    <div class="invalid-feedback">
+                                        Please enter a valid 16-digit card number
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <label for="expiry-date" class="form-label required">Expiry Date (MM/YY)</label>
+                                        <input type="text" class="form-control" id="expiry-date" name="expiry_date" disabled required pattern="(0[1-9]|1[0-2])\/([0-9]{2})">
+                                        <div class="invalid-feedback">
+                                            Please enter a valid expiry date (MM/YY)
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <label for="cvv" class="form-label required">CVV</label>
+                                        <input type="text" class="form-control" id="cvv" name="cvv" disabled required pattern="[0-9]{3,4}">
+                                        <div class="invalid-feedback">
+                                            Please enter a valid CVV
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">Delivery Information</h4>
+                            <div class="mb-4">
+                                <label for="delivery-type" class="form-label required">Delivery Type</label>
+                                <select class="form-select" id="delivery-type" name="delivery_type" required>
+                                    <option value="">Select delivery type</option>
+                                    <option value="pickup">Pick-up</option>
+                                    <option value="delivery">Delivery</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a delivery type
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <?php else: ?>
+                    <div class="card shadow-sm">
+                        <div class="card-body text-center py-5">
+                            <i class="bi bi-cart-x display-1 text-muted"></i>
+                            <p class="mt-3 text-muted">Your cart is currently empty.</p>
+                            <a href="marketplaces.php" class="btn btn-primary">Continue Shopping</a>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Order Summary</h4>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal</span>
+                            <span>$<?php echo number_format($total, 2); ?></span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Shipping</span>
+                            <span>Free</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-4">
+                            <strong>Total</strong>
+                            <strong>$<?php echo number_format($total, 2); ?></strong>
+                        </div>
+                        <?php if (count($order_items) > 0) : ?>
+                            <button type="submit" form="payment-form" class="btn btn-primary w-100">Complete Purchase</button>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
         </div>
-        <?php if (count($order_items) > 0) : ?>
-        <form id="payment-form" method="POST">
-            <div class="mb-3">
-                <label for="payment-method" class="form-label">Payment Method</label>
-                <select class="form-select" id="payment-method" name="payment_method" required>
-                    <option value="cash">Cash</option>    
-                    <option value="credit_card">Credit Card</option>
-                </select>
-            </div>
-            <div id="card-fields" style="display: none;">
-                <h5>Card Information</h5>
-                <div class="mb-3">
-                    <label for="card-name" class="form-label">Cardholder Name</label>
-                    <input type="text" class="form-control" id="card-name" name="card_name" disabled required>
-                </div>
-                <div class="mb-3">
-                    <label for="card-number" class="form-label">Card Number</label>
-                    <input type="text" class="form-control" id="card-number" name="card_number" disabled required>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="expiry-date" class="form-label">Expiry Date (MM/YY)</label>
-                        <input type="text" class="form-control" id="expiry-date" name="expiry_date" disabled required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="cvv" class="form-label">CVV</label>
-                        <input type="text" class="form-control" id="cvv" name="cvv" disabled required>
-                    </div>
-                </div>
-            </div>
-            <div class="mb-3">
-                <label for="delivery-type" class="form-label">Delivery Type</label>
-                <select class="form-select" id="delivery-type" name="delivery_type" required>
-                    <option value="pickup">Pick-up</option>
-                    <option value="delivery">Delivery</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Complete Purchase</button>
-        </form>
-        <?php else: ?>
-            <div>
-                <p class="text-muted">Your cart is currently empty.</p>
-            </div>
-        <?php endif; ?>
     </div>
 
-    <footer class="text-center mt-5">
-        <p>&copy; 2023 Food Marketplaces. All rights reserved.</p>
-    </footer>
+    <?php include("footer.php") ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <script>
         // Show card fields and enable the inputs only if credit card is selected
         document.getElementById('payment-method').addEventListener('change', function() {
@@ -200,6 +259,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 cardFields.style.display = 'none';
             }
         });
+
+        // Form validation
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
     </script>
 </body>
 </html>

@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 27, 2024 at 07:19 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: localhost
+-- Generation Time: Mar 18, 2025 at 02:46 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `miubites`
+-- Database: `miufashion`
 --
 
 -- --------------------------------------------------------
@@ -31,6 +31,7 @@ CREATE TABLE `cart` (
   `cart_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `menu_id` int(11) NOT NULL,
+  `size` varchar(20) NOT NULL,
   `quantity` int(11) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -84,18 +85,17 @@ CREATE TABLE `menus` (
 --
 
 INSERT INTO `menus` (`menu_id`, `restaurant_id`, `item_name`, `description`, `price`, `category`, `availability`) VALUES
-(1, 1, 'Hummus', 'Creamy chickpea dip served with pita bread.', 5.99, 'food', 1),
-(2, 1, 'Falafel', 'Crispy chickpea balls served with tahini sauce.', 6.99, 'food', 1),
-(3, 2, 'Shawarma', 'Grilled meat wrapped in pita bread with vegetables.', 7.99, 'food', 1),
-(4, 2, 'Kebab', 'Skewered and grilled meat served with rice.', 8.99, 'food', 1),
-(5, 3, 'Baklava', 'Sweet pastry made of layers of filo filled with nuts and honey.', 4.99, 'food', 1),
-(6, 3, 'Tabbouleh', 'Fresh parsley salad with tomatoes and bulgur.', 3.99, 'food', 1),
-(7, 4, 'Pita Bread', 'Soft flatbread perfect for dipping.', 1.99, 'food', 1),
-(8, 5, 'Mint Tea', 'Refreshing tea infused with mint leaves.', 2.99, 'drinks', 1),
-(9, 6, 'Cinnamon Roll', 'Delicious roll with cinnamon and icing.', 3.99, 'food', 1),
-(10, 7, 'Cheeseburger', 'Juicy beef burger with cheese and toppings.', 9.99, 'food', 1),
-(11, 8, 'Grilled Chicken', 'Tender grilled chicken served with sides.', 10.99, 'food', 1),
-(12, 9, 'Spicy Meatballs', 'Savory meatballs in a spicy sauce.', 8.49, 'food', 1);
+(1, 1, 'Shoe 1', 'Description', 5.99, 'food', 1),
+(2, 1, 'Shoe 2', 'Description', 6.99, 'food', 1),
+(13, 10, 'Pants 1', 'Description', 5.99, 'food', 1),
+(14, 10, 'Pants 2', 'Description', 4.00, 'food', 1),
+(15, 10, 'Pants 3', 'Description', 5.99, 'food', 1),
+(17, 11, 'T-Shirt 2', 'Description', 5.99, '', 1),
+(18, 11, 'T-Shirt 3', 'Description', 5.99, '', 1),
+(19, 11, 'T-Shirt 4', 'Description', 5.99, '', 1),
+(20, 11, 'T-Shirt 5', 'Description', 5.99, '', 1),
+(21, 11, 'T-Shirt 6', 'Description', 5.99, '', 1),
+(22, 11, 'T-Shirt 7', 'Description', 5.99, '', 1);
 
 -- --------------------------------------------------------
 
@@ -134,9 +134,11 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`order_id`, `customer_id`, `restaurant_id`, `status`, `total_price`, `payment_method`, `delivery_type`, `order_notes`, `created_at`) VALUES
-(18, 9, 5, 'processing', 2.99, 'cash', '', NULL, '2024-12-27 17:18:03'),
-(19, 9, 6, 'processing', 3.99, 'cash', '', NULL, '2024-12-27 17:18:03'),
-(20, 9, 3, 'processing', 4.99, 'cash', 'pickup', NULL, '2024-12-27 18:15:50');
+(21, 9, 1, 'processing', 5.99, 'cash', 'pickup', NULL, '2025-03-13 02:02:48'),
+(22, 9, 1, 'processing', 5.99, 'cash', 'pickup', NULL, '2025-03-13 02:03:00'),
+(23, 9, 1, 'processing', 5.99, 'cash', 'delivery', NULL, '2025-03-13 02:03:08'),
+(24, 15, 10, 'processing', 23.96, 'cash', 'pickup', NULL, '2025-03-18 01:15:09'),
+(25, 15, 1, 'processing', 5.99, 'cash', 'pickup', NULL, '2025-03-18 01:15:09');
 
 -- --------------------------------------------------------
 
@@ -162,6 +164,7 @@ CREATE TABLE `restaurants` (
   `restaurant_id` int(11) NOT NULL,
   `restaurant_name` varchar(255) NOT NULL,
   `description` text DEFAULT NULL,
+  `sizes` varchar(20) NOT NULL,
   `menu_uploaded` tinyint(1) DEFAULT 0,
   `delivery_option` tinyint(1) DEFAULT 1,
   `pickup_option` tinyint(1) DEFAULT 1,
@@ -173,16 +176,10 @@ CREATE TABLE `restaurants` (
 -- Dumping data for table `restaurants`
 --
 
-INSERT INTO `restaurants` (`restaurant_id`, `restaurant_name`, `description`, `menu_uploaded`, `delivery_option`, `pickup_option`, `status`, `created_at`) VALUES
-(1, 'Rtogo', 'Quick meals for on-the-go.', 0, 1, 1, 'active', '2024-12-27 13:13:48'),
-(2, 'Manoucheh', 'Traditional Lebanese flatbread with zaatar.', 0, 1, 1, 'active', '2024-12-27 13:13:48'),
-(3, 'Gyro', 'Delicious gyro with lamb and vegetables.', 0, 1, 1, 'active', '2024-12-27 13:13:48'),
-(4, 'Batates', 'Crispy fried potatoes seasoned with spices.', 0, 1, 1, 'active', '2024-12-27 13:13:48'),
-(5, 'Zalabia', 'Sweet fried dough balls drizzled with syrup.', 0, 1, 1, 'active', '2024-12-27 13:13:48'),
-(6, 'Cinnabon', 'Delicious cinnamon rolls with cream cheese frosting.', 0, 1, 1, 'active', '2024-12-27 13:13:48'),
-(7, 'TBS', 'Tasty burger with special sauce.', 0, 1, 1, 'active', '2024-12-27 13:13:48'),
-(8, 'Farghaly', 'Grilled chicken served with rice and salad.', 0, 1, 1, 'active', '2024-12-27 13:13:48'),
-(9, 'Shabrawy', 'Spicy grilled meat served with pita bread.', 0, 1, 1, 'active', '2024-12-27 13:13:48');
+INSERT INTO `restaurants` (`restaurant_id`, `restaurant_name`, `description`, `sizes`, `menu_uploaded`, `delivery_option`, `pickup_option`, `status`, `created_at`) VALUES
+(1, 'Shoes', 'Shoes For you', 'n 28-47', 0, 1, 1, 'active', '2024-12-27 13:13:48'),
+(10, 'Pants', 'Pants for you', 's', 0, 1, 1, 'active', '2025-03-13 02:11:09'),
+(11, 'T-Shirts', 'T-Shirts for you', 's', 0, 1, 1, 'active', '2025-03-13 02:11:35');
 
 -- --------------------------------------------------------
 
@@ -207,10 +204,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `name`, `email`, `password_hash`, `phone_number`, `address`, `role`, `restaurant_id`, `registration_date`) VALUES
-(8, 'Cinnabon', 'cinnabon@mail.com', '$2y$10$90IR3FBcJN9lQKv3SQiHLueF/ZTj3/sltBRChfJYZMVJanCPEcG.S', '19191919119', 'Cinnabon MIU', 'restaurant', 6, '2024-12-27 17:35:25'),
-(9, 'Shadow', 'mail@mail.com', '$2y$10$aCcjH/QyZi0obzTB1s2BH.gYYuRh7h.6wYrwOsTnxmszWuF2GcUle', '129301238201938', 'The white hosue', 'customer', NULL, '2024-12-27 17:37:07'),
-(10, 'Zalabia', 'zalabia@mail.com', '$2y$10$90IR3FBcJN9lQKv3SQiHLueF/ZTj3/sltBRChfJYZMVJanCPEcG.S', '19191919119', 'Zalabia MIU', 'restaurant', 5, '2024-12-27 17:35:25'),
-(11, 'Admin', 'admin@mail.com', '$2y$10$90IR3FBcJN9lQKv3SQiHLueF/ZTj3/sltBRChfJYZMVJanCPEcG.S', '19191919119', '', 'restaurant', NULL, '2024-12-27 17:35:25');
+(9, 'Shadow', 'mail@mail.com', '$2y$10$aCcjH/QyZi0obzTB1s2BH.gYYuRh7h.6wYrwOsTnxmszWuF2GcUle', '129301238201938', 'The white hosue', 'restaurant', NULL, '2024-12-27 17:37:07'),
+(11, 'Admin', 'admin@mail.com', '$2y$10$90IR3FBcJN9lQKv3SQiHLueF/ZTj3/sltBRChfJYZMVJanCPEcG.S', '19191919119', '', 'restaurant', NULL, '2024-12-27 17:35:25'),
+(12, 'youniss', 'youniss@gmail.com', '$2y$10$gFt0MY9RyAafXYuuacfbsuPnCPa660WTrFONMxqQSFfG0/SlXUnAS', '123123123123', '123123123123', 'customer', NULL, '2025-03-12 01:02:34'),
+(14, 'User', 'user@mail.com', '$2y$10$cjzBHDkE8g57tqqu0n9/MOoOpMJPVkxPuESa8rWcqrmWqkhds5.3W', '09321490123', 'dsafasdf', 'customer', NULL, '2025-03-18 01:03:56'),
+(15, 'test', 'test@mail.com', '$2y$10$xqRgU2CkKJa5sztfQB1ddeOh7YQjRPg35a9ogLt9v8TJjFglz6qXi', '12312332', 'asdfasdf', 'customer', NULL, '2025-03-18 01:36:26');
 
 --
 -- Indexes for dumped tables
@@ -291,7 +289,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `contracts`
@@ -309,7 +307,7 @@ ALTER TABLE `feedback`
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `menu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `menu_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -321,7 +319,7 @@ ALTER TABLE `notifications`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `order_items`
@@ -333,13 +331,13 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT for table `restaurants`
 --
 ALTER TABLE `restaurants`
-  MODIFY `restaurant_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `restaurant_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Constraints for dumped tables

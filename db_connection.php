@@ -2,7 +2,7 @@
 // db_connection.php
 
 $servername = "localhost"; // Database server
-$dbname = "MIUbites"; // Database name
+$dbname = "miufashion"; // Database name
 $username = "root"; // MySQL username
 $password = ""; // MySQL password (leave empty if no password)
 

@@ -34,13 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 }
                 exit();
             } else {
-                echo "Invalid password.";
+                $error = "Invalid password.";
             }
         } else {
-            echo "No user found with that email.";
+            $error = "No user found with that email.";
         }
     } else {
-        echo "Email and password are required.";
+        $error = "Email and password are required.";
     }
 }
 ?>
@@ -50,24 +50,74 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login - MIU Fashion</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
 </head>
 <body>
+    <?php include("header.php") ?>
+
     <div class="container mt-5">
-        <h2>Login</h2>
-        <form method="POST" action="">
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card shadow-lg">
+                    <div class="card-body p-5">
+                        <h2 class="text-center mb-4">Welcome Back</h2>
+                        <p class="text-center text-muted mb-4">Please login to your account</p>
+                        
+                        <?php if (isset($error)): ?>
+                            <div class="alert alert-danger" role="alert">
+                                <?php echo $error; ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <form method="POST" action="" class="needs-validation" novalidate>
+                            <div class="mb-4">
+                                <label for="email" class="form-label required">Email Address</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                                <div class="invalid-feedback">
+                                    Please enter a valid email address
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="password" class="form-label required">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                                <div class="invalid-feedback">
+                                    Please enter your password
+                                </div>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">Login</button>
+                            </div>
+                        </form>
+                        
+                        <div class="text-center mt-4">
+                            <p class="mb-0">Don't have an account? <a href="register.php" class="text-primary">Sign up here</a></p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-        </form>
-        <p class="mt-3">Don't have an account? <a href="register.php">Sign up here</a>.</p>
+        </div>
     </div>
+
+    <?php include("footer.php") ?>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Form validation
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
 </body>
 </html>
